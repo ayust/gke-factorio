@@ -9,8 +9,8 @@ If you don't already have a GKE cluster set up, you'll need to [create a GKE clu
 *Make sure to change `your-project-name` to the name of your own Cloud project.*
 
   1. [Reserve a static IP](https://console.cloud.google.com/networking/addresses/add) and attach it
-     to one of the nodes in your cluster. (Technically this is optional, but it's highly recommended to
-     prevent your server's IP address from changing arbitrarily.)
+     to one of the nodes in your cluster. *(Technically this is optional, but it's highly recommended.
+     Using a static IP means that your server's address won't change without warning.)*
 
   2. [Create a persistent disk](https://console.cloud.google.com/compute/disksAdd) named `factorio` on which the save games
      will be stored. (Minimum size is fine.)
