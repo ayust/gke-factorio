@@ -31,6 +31,7 @@ spec:
         app: factorio
     spec:
       containers:
+          # Replace amber-general with your own GKE project
         - image: gcr.io/amber-general/factorio-headless:latest
           name: factorio-headless
           env:
@@ -50,6 +51,9 @@ spec:
               mountPath: /opt/factorio/saves
       volumes:
         - name: factorio-persistent-saves
-          gcePersistentDisk: # We expect a pre-existing persistent disk
+          # We expect a pre-created persistent disk named 'factorio'
+          # on which the savegames will be stored. (Otherwise the
+          # game would reset any time the server crashed.)
+          gcePersistentDisk:
             pdName: factorio
             fsType: ext4
