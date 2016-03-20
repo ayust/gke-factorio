@@ -41,7 +41,18 @@ Use the IP you previously reserved and this port to connect in the Factorio clie
 
 If you want to tweak the Factorio server settings, you can change the values of the environment
 variables being set in `gke-factorio.yaml`. If you've made changes to the configuration, it won't
-take effect until you re-create the replication controller:
+take effect until you re-create the replication controller.
+
+First, force a save in-game so that the server will write out a checkpoint to its main save file
+(rather than just the autosave files):
+
+```
+Open the console with ~ then type the following:
+
+/c game.server_save()
+```
+
+Then use `kubectl` to re-create the replication controller:
 
 ```
 kubectl delete rc factorio-controller
