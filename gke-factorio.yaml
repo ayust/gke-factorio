@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: factorio-service
+spec:
+  # NodePort picks a random port to expose on the nodes
+  # of the cluster, and maps it to 34197 on the container.
+  # Use 'kubectl describe svc factorio' to find the NodePort
+  # value (*not* the Port value) that you'll use to connect.
+  #
+  # You may want to map a static IP to one of your cluster
+  # nodes to use along with this port instead of ephemeral.
+  type: NodePort
+  ports:
+  - port: 34197
+    protocol: UDP
+  selector:
+    app: factorio
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: factorio-controller
+spec:
+  replicas: 1
+  selector:
+    app: factorio
+  template:
+    metadata:
+      labels:
+        app: factorio
+    spec:
+      containers:
+        - image: gcr.io/amber-general/factorio-headless:latest
+          name: factorio-headless
+          env:
+            - name: FACTORIO_SAVENAME
+              value: "headless"
+            - name: FACTORIO_LATENCY_MS
+              value: "50"
+            - name: FACTORIO_AUTOSAVE_INTERVAL
+              value: "5"
+            - name: FACTORIO_AUTOSAVE_SLOTS
+              value: "3"
+          ports:
+            - containerPort: 34197
+              protocol: UDP
+          volumeMounts:
+            - name: factorio-persistent-saves
+              mountPath: /opt/factorio/saves
+      volumes:
+        - name: factorio-persistent-saves
+          gcePersistentDisk: # We expect a pre-existing persistent disk
+            pdName: factorio
+            fsType: ext4
