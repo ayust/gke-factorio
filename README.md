@@ -36,3 +36,17 @@ NodePort:               <unnamed>       31234/UDP
 ```
 
 Use the IP you previously reserved and this port to connect in the Factorio client.
+
+### Configuration
+
+If you want to tweak the Factorio server settings, you can change the values of the environment
+variables being set in `gke-factorio.yaml`. If you've made changes to the configuration, it won't
+take effect until you re-create the replication controller:
+
+```
+kubectl delete rc factorio-controller
+kubectl create -f gke-factorio.yaml
+```
+
+(Note that the `create` command will try to create both the service and the replication controller again,
+but since the service still exists, it'll give an error. That's okay.)
