@@ -61,3 +61,5 @@ kubectl create -f gke-factorio.yaml
 
 (Note that the `create` command will try to create both the service and the replication controller again,
 but since the service still exists, it'll give an error. That's okay.)
+
+You can use the same process to update the version of the server - just grab the new server file, re-build and re-push the docker image, and then re-create the replication controller to restart the server.
