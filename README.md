@@ -19,7 +19,7 @@ If you don't already have a GKE cluster set up, you'll need to [create a GKE clu
     into the same directory as the `Dockerfile`.
 
   4. Build the docker image:<br/>
-    `docker build -t gcr.io/your-project-name/factorio-headless:latest`
+    `docker build -t gcr.io/your-project-name/factorio-headless:latest .`
 
   5. Push the docker image to the container registry:<br/>
     `gcloud docker push gcr.io/your-project-name/factorio-headless:latest`
