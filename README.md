@@ -12,7 +12,7 @@ If you don't already have a GKE cluster set up, you'll need to [create a GKE clu
      to one of the nodes in your cluster. *(Technically this is optional, but it's highly recommended.
      Using a static IP means that your server's address won't change without warning.)*
 
-  2. [Create a persistent disk](https://console.cloud.google.com/compute/disksAdd) named `factorio` on which the save games
+  2. [Create a blank persistent disk](https://console.cloud.google.com/compute/disksAdd) named `factorio` on which the save games
      will be stored. (Minimum size is fine.)
 
   3. Download the headless server tarball from https://www.factorio.com/download-headless and place it
