@@ -7,13 +7,21 @@ AUTOSAVE_INTERVAL="${FACTORIO_AUTOSAVE_INTERVAL:-5}"
 AUTOSAVE_SLOTS="${FACTORIO_AUTOSAVE_SLOTS:-3}"
 # If you want to pass any other args to the server command
 EXTRA_OPTS="${FACTORIO_EXTRA_OPTS:-}"
-
+# If you want to pass any other args to initial savegame creation
+CREATE_OPTS="${FACTORIO_CREATE_OPTS:-}"
+MAP_SETTINGS="/opt/factorio/map-gen-settings.json"
 
 SAVEDIR="/opt/factorio/saves"
 SAVEPATH="$SAVEDIR/$SAVENAME.zip"
 
 if [ ! -f "$SAVEPATH" ]; then
-  /opt/factorio/bin/x64/factorio --create "$SAVENAME"
+  if [ -f "$MAP_SETTINGS" ]; then
+    echo "Adding $MAP_SETTINGS to creation options..."
+    CREATE_OPTS+=" --map-gen-settings $MAP_SETTINGS"
+  fi
+
+  # --create expects the path *without* the .zip extension, for some reason
+  /opt/factorio/bin/x64/factorio --create "$SAVEDIR/$SAVENAME" $CREATE_OPTS
 else
   # Check if there's a more recent autosave (e.g. server crashed)
   LATEST_SAVEFILE="$(ls -t "$SAVEDIR" 2>/dev/null | head -1)"
@@ -37,7 +45,7 @@ fi
 
 # Run the server
 /opt/factorio/bin/x64/factorio \
-  --start-server "$SAVENAME" \
+  --start-server "$SAVEPATH" \
   --latency-ms "$LATENCY" \
   --autosave-interval "$AUTOSAVE_INTERVAL" \
   --autosave-slots "$AUTOSAVE_SLOTS" \
